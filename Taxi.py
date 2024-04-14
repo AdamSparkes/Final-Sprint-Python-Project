@@ -223,6 +223,7 @@ def EnterCompanyExpense():
     pass
 
 def TrackCarRentals():
+  
     
     f = open('Defaults.dat', 'r')
 
@@ -232,7 +233,7 @@ def TrackCarRentals():
     DAILY_RENTAL_FEE = float(f.readline())       #60.00
     WEEKLY_RENTAL_FEE = float(f.readline())      #300.00
     HST_RATE = float(f.readline())
-
+    f.close()
    
 
     
@@ -326,7 +327,7 @@ def TrackCarRentals():
     f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
     f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
     f.write("{}\n".format(str(HST_RATE)))
-    
+    f.close()
     
     WriteDate = FV.FDateM(StartDate)
     WriteCost =FV.FDollar0(RentCost)
@@ -336,7 +337,7 @@ def TrackCarRentals():
     f = open('Rentals.dat', 'w')
     
     f.write(f'{DriverNum},{RentalID},{CarNum},{RevType},{WriteDate},{WriteCost},{WriteHST},{WriteTotal}')   
-    
+    f.close()
     RevDate = StartDate.strftime("%Y-%m-%d")
     f = open('Revenue.dat', 'r')
     with open('Revenue.dat', 'a') as file:
@@ -345,7 +346,20 @@ def TrackCarRentals():
         NewRent = lines[0] + 1
         f.write(f'{NewRent},{RevDate},{RevType}, - Car {CarNum}, {DriverNum},{FV.FDollar0(RentCost)},{FV.FDollar0(HST)},{FV.FDollar0(Total)}')
 
-   
+    f.close()
+
+    f = open('Employee.dat', 'a')
+ 
+ 
+    with open('Employee.dat', 'r') as file:
+        Employeelines = file.readlines()
+        for lines in Employeelines:
+            if lines[0] == DriverNum:
+                lines[-1] += Total
+            else:
+                pass
+
+    f.close()
 
    
 
